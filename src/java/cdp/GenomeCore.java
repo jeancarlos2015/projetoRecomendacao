@@ -9,12 +9,12 @@ package cdp;
  *
  * @author jean
  */
-public class GenomePontuacao {
+public class GenomeCore extends Item{
     private int movieId;
     private int tagId;
     private double relevance;
     
-    public GenomePontuacao(String info){
+    public GenomeCore(String info){
         String[] dado = info.split(",");
         movieId = Integer.parseInt(dado[0]);
         tagId = Integer.parseInt(dado[1]);
@@ -61,5 +61,11 @@ public class GenomePontuacao {
      */
     public void setRelevance(double relevance) {
         this.relevance = relevance;
+    }
+
+    @Override
+    public String[] getAtributos() {
+        String[] atributos = {"movieid","tagid","relevance"};
+        return atributos;
     }
 }

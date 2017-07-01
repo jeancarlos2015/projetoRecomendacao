@@ -5,37 +5,34 @@
  */
 package cgd;
 
-import cdp.Tag;
-import cdp.Tag;
-import java.util.ArrayList;
-import java.util.List;
+import cdp.Link;
 
 /**
  *
  * @author jean
  */
-public class DaoTag implements Dao{
+public class DaoLink implements Dao{
     private final Persistencia persistencia = new Persistencia();
     @Override
     public boolean salvar(Object objeto) {
         if(objeto==null){return false;}
-        Tag tag = (Tag) objeto;
-        return  persistencia.executar("insert into tag(userId, movieId, tag, time_stamp) values('"+tag.getUserId()+"','"+tag.getMovieId()+"','"+tag.getTag()+"', '"+tag.getTimestamp()+"')");
+        Link ligacao = (Link) objeto;
+        return persistencia.executar("insert into link(movieId, imdbld, tmdbld) values("+ligacao.getMovieId()+", "+ligacao.getImdbId()+", "+ligacao.getTmdbId()+")");
     }
 
     @Override
     public boolean delete(Object objeto) {
-        Tag tag = (Tag) objeto;
-        return persistencia.executar("delete from tag where userId = '"+tag.getUserId()+"'");
+        Link ligacao = (Link) objeto;
+        return persistencia.executar("delete from link where tmdbld="+ligacao.getTmdbId()+"");
     }
 
     @Override
     public boolean existe(Object objeto) {
-        Tag tag = (Tag) objeto;
-        String comando="select movieid from tag where movieid="+tag.getMovieId();
+        Link link = (Link) objeto;
+        String comando="select movieid from link where movieid="+link.getMovieId();
         String[] result = persistencia.executarSelecao(comando).split(";");
         for(String info:result){
-            if(info.equals(tag.getMovieId())){
+            if(info.equals(link.getMovieId())){
                 return true;
             }
         }
@@ -46,7 +43,6 @@ public class DaoTag implements Dao{
     public Object buscar(String id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    
+
     
 }

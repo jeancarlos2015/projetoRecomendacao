@@ -5,6 +5,8 @@
  */
 package cgd;
 
+import java.util.List;
+
 /**
  *
  * @author jean
@@ -12,4 +14,8 @@ package cgd;
 public interface Dao {
     public boolean salvar(Object objeto);
     public boolean delete(Object objeto);
+    public boolean existe(Object objeto);
+    public Object buscar(String id);
+    
+    
 }

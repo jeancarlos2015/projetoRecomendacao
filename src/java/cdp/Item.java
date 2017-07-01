@@ -10,5 +10,5 @@ package cdp;
  * @author jean
  */
 public abstract class Item {
-    
+    public abstract String[] getAtributos();
 }

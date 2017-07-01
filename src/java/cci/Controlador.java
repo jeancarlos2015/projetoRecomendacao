@@ -5,8 +5,16 @@
  */
 package cci;
 
+import cdp.Movie;
+import cdp.Rating;
+import cgd.DaoMovie;
+import cgd.DaoRating;
+import cgt.PreProcessamento;
+import cih.Tela;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,70 +27,76 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "Controlador", urlPatterns = {"/Controlador"})
 public class Controlador extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    
+    private PreProcessamento processador = new PreProcessamento();
+    private Tela tela = new Tela();
+    @Override
+    protected void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Controlador</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet Controlador at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        classificar(request, response);
+        recomendarUsuarios(request, response);
+        recomendarItens(request, response);
+    }
+
+    
+    public void classificar(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
+        String operacao = tela.getDado(request, "operacao");
+        
+        
+        if(operacao.equals("classificar")){
+            Rating rating = new Rating();
+            DaoRating daoRating = new DaoRating();
+            String userid = tela.getDado(request, "userid");
+            String movieid = tela.getDado(request, "movieid");
+            rating.setMovieId(movieid);
+            rating.setUserId(userid);
+            
+            if(daoRating.existe(rating)){
+                float classifi = processador.classificar(Integer.parseInt(userid),Integer.parseInt(movieid));
+                tela.enviarMensagem(request, response, "Classificacao = "+classifi,"classificacaoItem.jsp");
+            }else{
+                tela.enviarMensagem(request, response, "Usuario ou filme nao existem!!!","classificacaoItem.jsp");
+            }
+            
+
         }
+        
     }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+    
+    public void recomendarUsuarios(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
+        String operacao = tela.getDado(request, "operacao");
+        if(operacao.equals("recomendacaoUsuarios")){
+            PrintWriter pw = response.getWriter();
+            String movieid = request.getParameter("movieid");
+            List<String> usuarios = processador.recomendarUsuarios(movieid);
+            pw.println("<h1>Lista De Usuarios Recomendados</h1>");
+            for(String usuario:usuarios){
+                pw.println("userid: "+ usuario);
+                pw.println("<br>");
+            }
+        }
+        
     }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+    
+    public void recomendarItens(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
+        String operacao = tela.getDado(request, "operacao");
+        
+        if(operacao.equals("recomendacaoItens")){
+            
+            PrintWriter pw = response.getWriter();
+            String userid = request.getParameter("userid");
+            List<String> id_filmes = new ArrayList();
+            id_filmes = processador.recomendarFilmes(userid.trim(),15);
+            DaoMovie dao = new DaoMovie();
+            pw.println("<h1>Lista De Filmes Recomendados</h1>");
+            for(String id_filme:id_filmes){
+                Movie movie = (Movie) dao.buscar(id_filme);
+                pw.println("Titulo :"+movie.getTitle()+"               Ano :"+ movie.getYear());
+                pw.println("<br>");
+            }
+//            
+//          
+        }
+        
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }

@@ -5,7 +5,7 @@
  */
 package cgd;
 
-import cdp.Ligacao;
+import cdp.Link;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -13,25 +13,25 @@ import static org.junit.Assert.*;
  *
  * @author jean
  */
-public class DaoLigacaoTest {
+public class DaoLinkTest {
     
-    public DaoLigacaoTest() {
+    public DaoLinkTest() {
     }
 
     /**
-     * Test of salvar method, of class DaoLigacao.
+     * Test of salvar method, of class DaoLink.
      */
     @Test
     public void testSalvar() {
-        Dao dao = new DaoLigacao();
-        Ligacao ligacao = new Ligacao("40819,0358273,69");
+        Dao dao = new DaoLink();
+        Link ligacao = new Link("5,0113041,11862");
         boolean result=dao.salvar(ligacao);
         assertTrue(result);
     }
-    @Test
+    
     public void testDelete(){
-        Dao dao = new DaoLigacao();
-        Ligacao ligacao = new Ligacao("40819,0358273,69");
+        Dao dao = new DaoLink();
+        Link ligacao = new Link("131256,0358273,69");
         boolean result=dao.delete(ligacao);
         assertTrue(result);
     }

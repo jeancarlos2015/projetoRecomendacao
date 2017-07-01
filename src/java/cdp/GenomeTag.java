@@ -9,7 +9,7 @@ package cdp;
  *
  * @author jean
  */
-public class GenomeTag {
+public class GenomeTag extends Item{
     private String tagId;
     private String tag;
     
@@ -45,5 +45,11 @@ public class GenomeTag {
      */
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    @Override
+    public String[] getAtributos() {
+        String[] atributos = {"tagid","tag"};
+        return atributos;
     }
 }

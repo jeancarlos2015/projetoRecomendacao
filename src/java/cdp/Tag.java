@@ -9,20 +9,36 @@ package cdp;
  *
  * @author jean
  */
-public class Tag {
-    private String usuarioId;
-    private String filmeId;
-    private String tag;
-    private String timestamp;
+public class Tag extends Item{
+    private String userId="";
+    private String movieId="";
+    private String tag="";
+    private String timestamp="000";
     
+    public Tag(){};
     public Tag(String info){
-        String[] dado = info.split(",");
-        usuarioId = dado[0].trim();
-        filmeId = dado[1].trim();
-        tag = dado[2];
-        timestamp = dado[3];
+        expr(info);
     }
-   
+   public void expr(String info){
+       String[] dado = info.split(",");
+        if(dado.length>2){
+            userId = dado[0].trim();
+            movieId = dado[1].trim();
+            for(int index=2;index<dado.length-1;index++){
+                tag+=dado[index].replace("\"", "").replace("'", "");
+            }
+            timestamp = dado[dado.length-1];
+        }else if (dado.length==2){
+            userId = dado[0].trim();
+            movieId =dado[1].trim();
+            timestamp = "0000";
+        }else{
+            userId = dado[0].trim();
+            movieId ="1";
+            timestamp = "0000";
+        }
+        
+   }
 
    
     /**
@@ -54,31 +70,37 @@ public class Tag {
     }
 
     /**
-     * @return the usuarioId
+     * @return the userId
      */
-    public String getUsuarioId() {
-        return usuarioId;
+    public String getUserId() {
+        return userId;
     }
 
     /**
-     * @param usuarioId the usuarioId to set
+     * @param userId the userId to set
      */
-    public void setUsuarioId(String usuarioId) {
-        this.usuarioId = usuarioId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     /**
-     * @return the filmeId
+     * @return the movieId
      */
-    public String getFilmeId() {
-        return filmeId;
+    public String getMovieId() {
+        return movieId;
     }
 
     /**
-     * @param filmeId the filmeId to set
+     * @param movieId the movieId to set
      */
-    public void setFilmeId(String filmeId) {
-        this.filmeId = filmeId;
+    public void setMovieId(String movieId) {
+        this.movieId = movieId;
+    }
+
+    @Override
+    public String[] getAtributos() {
+        String[] atributos = {"tagid","userid","movieid","tag","time_stamp"};
+        return atributos;
     }
     
 }

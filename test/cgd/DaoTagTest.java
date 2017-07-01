@@ -5,6 +5,7 @@
  */
 package cgd;
 
+import cdp.Rating;
 import cdp.Tag;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -21,17 +22,17 @@ public class DaoTagTest {
     /**
      * Test of salvar method, of class DaoTag.
      */
-    @Test
+    
     public void testSalvar() {
         Dao dao = new DaoTag();
-        Tag tag = new Tag("50798,6874,visceral,1273666358");
-        assertTrue(dao.salvar(tag));
+        Tag tag = new Tag("660,260,\"imaginary world, characters, story, philosophical\",1436680217");
+        System.out.println(tag.getMovieId()+","+tag.getTag()+","+tag.getUserId()+","+tag.getTimestamp());
     }
 
     /**
      * Test of delete method, of class DaoTag.
      */
-    @Test
+    
     public void testDelete() {
         Dao dao = new DaoTag();
         Tag tag = new Tag("50798,6874,visceral,1273666358");

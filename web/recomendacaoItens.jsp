@@ -1,3 +1,10 @@
+<%-- 
+    Document   : classificacaoItens
+    Created on : 28/06/2017, 07:58:15
+    Author     : jean
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <!--
 To change this license header, choose License Headers in Project Properties.
@@ -21,21 +28,26 @@ and open the template in the editor.
 
 
     </head>
+    
     <body>
+        
         <nav class="navbar navbar-inverse">
             <ul class="nav nav-pills">
-                <li role="presentation" ><a href="classificacaoItens.html">Perfis De Usuários</a></li>
-                <li role="presentation" class="active"><a href="classificacaoItem.html">Classificação Do Ítem</a></li>
-                <li role="presentation"><a href="listaUsuarios.html">Lista De Usuários Recomendados</a></li>
+                <li role="presentation"><a href="recomendacaoUsuarios.jsp">Recomendação De Usuários</a></li>
+                <li role="presentation" ><a href="classificacaoItem.jsp">Classificação Do Ítem</a></li>
+                <li role="presentation" class="active"><a href="recomendacaoItens.jsp">Recomendação De Ítens</a></li>
             </ul>
         </nav>
+        <h1>Recomendação De Ítens</h1>
         <form method="post" action="Controlador">
-                <h1>Classificação Do Ítem</h1>
                 <span class="campo" id="basic-addon1" >Código Do Usuário</span>
-                <input id="descricao" type="text" class="campo" name="codigousuario"  placeholder="Código Do Usuario" required="required" aria-describedby="basic-addon1">
-                <span class="campo" id="basic-addon1" >Item</span>
-                <input id="descricao" type="text" class="campo" name="codigoitem"  placeholder="Código Do Item" required="required" aria-describedby="basic-addon1">
-                <button type="submit" class="btn btn-default campo">Obter Classificação Do Item</button>
-            </form>
+                <input id="descricao" type="text" class="campo" name="userid"  placeholder="Código Do Usuario" required="required" aria-describedby="basic-addon1">
+                <input type="text" class="oculto" name="operacao" value="recomendacaoItens">
+                <button type="submit" class="btn btn-default campo">Obter Lista De Classificação</button>
+        </form>
+        
+        <div class="alert">
+                <h3 class="mensagem">${mensagem}</h3>
+            </div>
     </body>
 </html>
